@@ -1,3 +1,7 @@
+# SPADER
+# WebExtension maker's toolkit.
+# Copyright (C) 2020 Cosmic Shovel, Inc.
+
 require "rubygems"
 
 require "date"

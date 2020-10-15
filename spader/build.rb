@@ -4,6 +4,11 @@ def build(base_dir, browser, environment, version, zip = false)
     exit(0)
   end
   
+  if !Dir.exists?(base_dir)
+    dmsg("Extension directory does not exist, exiting.")
+    exit(0)
+  end
+  
   if base_dir[0, 1] != "/" && base_dir[1, 1] != ":"
     base_dir = Dir.getwd() + "/" + base_dir
   end
