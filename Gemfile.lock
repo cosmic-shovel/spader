@@ -1,0 +1,30 @@
+PATH
+  remote: .
+  specs:
+    spader (0.0.0.pre.pre)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    execjs (2.7.0)
+    ffi (1.13.1-x64-mingw32)
+    rubyzip (2.3.0)
+    sassc (2.4.0-x64-mingw32)
+      ffi (~> 1.9)
+    uglifier (4.2.0)
+      execjs (>= 0.3.0, < 3)
+    zip-zip (0.3)
+      rubyzip (>= 1.0.0)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  rubyzip
+  sassc
+  spader!
+  uglifier
+  zip-zip
+
+BUNDLED WITH
+   2.1.4

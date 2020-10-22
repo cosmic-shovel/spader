@@ -1,45 +1,60 @@
+#!/usr/bin/env ruby
+
 # SPADER
 # WebExtension maker's toolkit.
 # Copyright (C) 2020 Cosmic Shovel, Inc.
 
-require "rubygems"
+require "spader"
 
-require "date"
-require "fileutils"
-require "json"
-
-require "sassc"
-require "uglifier"
-
-require_relative "spader/util"
-require_relative "spader/zip"
-require_relative "spader/skeleton"
-require_relative "spader/build"
-require_relative "spader/download"
 #require_relative "rb/dl_libs"
 #require_relative "rb/rendering_helpers"
 
 ########################################################################################
 
 if ARGV.length() == 0 || ARGV.include?("--help") || ARGV.include?("-h")
-  puts "ruby spader.rb <command> <args>\nvalid commands: skeleton, download, build\nvalid parameters:\n* skeleton: <project title>\n* download: none\n* build: <extension path> <browser> <environment> <version> [--zip]"
+  puts "spader <command> <args>\nvalid commands: generate, download, build, help\nvalid parameters:\n* generate: <project title>\n* download: none\n* build: <extension path> <browser> <environment> <version> [--zip]\n* help: <command>\n"
   exit(0)
 end
 
 spader_command = ARGV[0]
+spader_command_args = ARGV.drop(1)
 
 case spader_command
 when "build"
-  dmsg("Building...")
-  build(ARGV[1].dup(), ARGV[2].dup(), ARGV[3].dup(), ARGV[4].dup(), ARGV.include?("--zip"))
+  Spader.build(spader_command_args)
+  #dmsg("Building...")
+  #build(ARGV[1].dup(), ARGV[2].dup(), ARGV[3].dup(), ARGV[4].dup(), ARGV.include?("--zip"))
 when "download"
-  dmsg("Downloading...")
-  dmsg("Not implemented!")
-when "skeleton"
-  dmsg("Generating skeleton...")
-  generate_skeleton(__dir__ + "/#{title.downcase().gsub(" ", "_")}/", title)
+  Spader.download(spader_command_args)
+  #dmsg("Downloading...")
+  #dmsg("Not implemented!")
+when "generate"
+  Spader.generate(spader_command_args)
+  #dmsg("Generating skeleton...")
+  
+  #title = ARGV[1]
+  
+  #if title.nil?()
+  #  dmsg("ruby spader.rb --skeleton <extension name>")
+  #  exit(0)
+  #end
+  
+  #generate_skeleton(__dir__ + "/#{title.downcase().gsub(" ", "_")}/", title)
+when "help"
+  case spader_command_args[0]
+  when "build"
+    puts "The build command compiles your code into a WebExtension."
+  when "download"
+    puts "The download command installs bit-perfect copies of third party libraries into your source directory ."
+  when "skeleton"
+    puts "The skeleton command generates an empty but build-able project directory."
+  else
+    puts "Invalid command: #{spader_command_args[0]}"
+  end
+  
+  exit(0)
 else
-  dmsg("Invalid command, exiting.")
+  puts "Invalid command, exiting."
   exit(0)
 end
 

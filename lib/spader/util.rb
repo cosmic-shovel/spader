@@ -55,6 +55,24 @@ def browsers()
   return %w[chrome firefox safari opera edge]
 end
 
+def entries(path)
+  list = Dir.entries(path).delete_if {|f| f == "." || f == ".."}
+  out = []
+  
+  list.each do |entry|
+    full_path = path.dup()
+    
+    if path[-1, 1] != "/"
+      full_path << "/"
+    end
+    
+    full_path << entry
+    out << full_path
+  end
+  
+  return out
+end
+
 def dirs_in_dir(path)
   list = entries(path).delete_if {|f| !File.directory?(f)}
   out = []
@@ -76,20 +94,22 @@ def files_in_dir(path)
   return list
 end
 
-def entries(path)
-  list = Dir.entries(path).delete_if {|f| f == "." || f == ".."}
-  out = []
+def primary_files_in_dir(path)
+  return files_in_dir(path).delete_if {|f| f[0, 1] == "_"}
+end
+
+def partial_files_in_dir(path)
+  return files_in_dir(path).delete_if {|f| f[0, 1] != "_"}
+end
+
+def primary_scss_files()
   
-  list.each do |entry|
-    full_path = path.dup()
-    
-    if path[-1, 1] != "/"
-      full_path << "/"
-    end
-    
-    full_path << entry
-    out << full_path
-  end
+end
+
+def primary_js_files()
   
-  return out
+end
+
+def primary_html_files()
+  
 end

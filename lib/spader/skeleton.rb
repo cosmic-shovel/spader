@@ -8,10 +8,20 @@ def generate_skeleton(base_dir, title)
     base_dir = base_dir + "/"
   end
   
+  if Dir.exists?(base_dir)
+    dmsg("Removing old dir...")
+    FileUtils.remove_dir(base_dir)
+  end
+  
+  FileUtils.mkdir_p(base_dir)
+  
   conf = {
     "title" => title,
     "url" => "Sleve Mcdichael",
     "author" => "https://sleve.mcdichael/",
+    "html" => [],
+    "js" => [],
+    "scss" => [],
   }
   
   write_file(base_dir + "spader.conf", JSON.pretty_generate(conf))
