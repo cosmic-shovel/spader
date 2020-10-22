@@ -23,6 +23,26 @@ module Spader
       FileUtils.mkdir_p(project.path)
       
       project.save_file(project.path + "spader.json")
+      new_dirs = [
+        "_locales/en",
+        "dist/development",
+        "dist/production",
+        "font",
+        "html",
+        "icon",
+        "js",
+        "manifest",
+      ]
+      
+      new_dirs.each do |new_dir|
+        FileUtils.mkdir_p(project.path + new_dir)
+      end
+      
+      manifest = Manifest.generate()
+      
+      BROWSERS.each do |browser|
+        manifest.save_file(project.path + "manifest/#{browser}.json")
+      end
     end
   end
 end

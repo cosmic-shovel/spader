@@ -5,10 +5,12 @@
 #require "spader/download"
 
 require "spader/command"
-  require "spader/json_document"
-  require "spader/project"
+require "spader/json_document"
+  
 
 module Spader
+  BROWSERS = %w[chrome edge firefox opera safari].freeze()
+  
   require "date"
   require "fileutils"
   require "json"
