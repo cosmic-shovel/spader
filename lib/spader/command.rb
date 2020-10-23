@@ -11,4 +11,5 @@ module Spader
   end
   
   require "spader/commands/generate"
+  require "spader/commands/build"
 end

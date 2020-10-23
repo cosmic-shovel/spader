@@ -1,5 +1,5 @@
 module Spader
-  class Manifest < JsonDocument
+  class Manifest < Document
     def self.generate()
       manifest = Manifest.new()
       

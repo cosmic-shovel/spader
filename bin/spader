@@ -19,43 +19,49 @@ end
 spader_command = ARGV[0]
 spader_command_args = ARGV.drop(1)
 
-case spader_command
-when "build"
-  Spader.build(spader_command_args)
-  #dmsg("Building...")
-  #build(ARGV[1].dup(), ARGV[2].dup(), ARGV[3].dup(), ARGV[4].dup(), ARGV.include?("--zip"))
-when "download"
-  Spader.download(spader_command_args)
-  #dmsg("Downloading...")
-  #dmsg("Not implemented!")
-when "generate"
-  Spader.generate(spader_command_args)
-  #dmsg("Generating skeleton...")
-  
-  #title = ARGV[1]
-  
-  #if title.nil?()
-  #  dmsg("ruby spader.rb --skeleton <extension name>")
-  #  exit(0)
-  #end
-  
-  #generate_skeleton(__dir__ + "/#{title.downcase().gsub(" ", "_")}/", title)
-when "help"
-  case spader_command_args[0]
+begin
+
+  case spader_command
   when "build"
-    puts "The build command compiles your code into a WebExtension."
+    Spader.build(spader_command_args)
+    #dmsg("Building...")
+    #build(ARGV[1].dup(), ARGV[2].dup(), ARGV[3].dup(), ARGV[4].dup(), ARGV.include?("--zip"))
   when "download"
-    puts "The download command installs bit-perfect copies of third party libraries into your source directory ."
-  when "skeleton"
-    puts "The skeleton command generates an empty but build-able project directory."
+    Spader.download(spader_command_args)
+    #dmsg("Downloading...")
+    #dmsg("Not implemented!")
+  when "generate"
+    Spader.generate(spader_command_args)
+    #dmsg("Generating skeleton...")
+    
+    #title = ARGV[1]
+    
+    #if title.nil?()
+    #  dmsg("ruby spader.rb --skeleton <extension name>")
+    #  exit(0)
+    #end
+    
+    #generate_skeleton(__dir__ + "/#{title.downcase().gsub(" ", "_")}/", title)
+  when "help"
+    case spader_command_args[0]
+    when "build"
+      puts "The build command compiles your code into a WebExtension."
+    when "download"
+      puts "The download command installs bit-perfect copies of third party libraries into your source directory ."
+    when "skeleton"
+      puts "The skeleton command generates an empty but build-able project directory."
+    else
+      puts "Invalid command: #{spader_command_args[0]}"
+    end
+    
+    exit(0)
   else
-    puts "Invalid command: #{spader_command_args[0]}"
+    puts "Invalid command, exiting."
+    exit(0)
   end
-  
-  exit(0)
-else
-  puts "Invalid command, exiting."
-  exit(0)
+rescue Spader::Command::InvalidParametersError => e
+  puts "Aborting due to invalid parameters."
+  exit(1)
 end
 
 exit(0)

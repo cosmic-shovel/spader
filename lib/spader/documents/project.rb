@@ -1,5 +1,5 @@
 module Spader
-  class Project < JsonDocument
+  class Project < Document
     attr_accessor :title, :url, :author, :html, :js, :scss, :path
     
     def self.generate(base_dir, opts = {})
@@ -15,7 +15,7 @@ module Spader
       return project
     end
     
-    def save_file(path)
+    def save_json(path)
       @document = {
         "path" => @path,
         "title" => @title,

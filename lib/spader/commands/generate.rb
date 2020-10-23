@@ -22,7 +22,8 @@ module Spader
       
       FileUtils.mkdir_p(project.path)
       
-      project.save_file(project.path + "spader.json")
+      project.save_json(project.path + "spader.json")
+      
       new_dirs = [
         "_locales/en",
         "dist/development",
@@ -32,16 +33,30 @@ module Spader
         "icon",
         "js",
         "manifest",
+        "promo",
+        "scss",
+        "txt",
       ]
       
       new_dirs.each do |new_dir|
         FileUtils.mkdir_p(project.path + new_dir)
       end
       
+      FileUtils.touch(project.path + "txt/README.md")
+      
+      messages = Messages.generate(project.title)
+      messages.save_json(project.path + "_locales/en/messages.json")
+      
       manifest = Manifest.generate()
       
       BROWSERS.each do |browser|
-        manifest.save_file(project.path + "manifest/#{browser}.json")
+        if browser == "chrome"
+          manifest.document["update_url"] = "http://clients2.google.com/service/update2/crx"
+        else
+          manifest.document.delete("update_url")
+        end
+        
+        manifest.save_json(project.path + "manifest/#{browser}.json")
       end
     end
   end
