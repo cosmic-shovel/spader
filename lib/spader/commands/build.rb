@@ -63,7 +63,6 @@ module Spader
           in_filename = File.basename(scss_file)
           out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".css", "").gsub(".scss", "")
           out_file << ".css"
-          puts out_file
           scss_data = nil
           
           if in_filename.include?(".erb")

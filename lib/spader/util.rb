@@ -95,11 +95,11 @@ def files_in_dir(path)
 end
 
 def primary_files_in_dir(path)
-  return files_in_dir(path).delete_if {|f| f[0, 1] == "_"}
+  return files_in_dir(path).delete_if {|f| File.basename(f)[0, 1] == "_"}
 end
 
 def partial_files_in_dir(path)
-  return files_in_dir(path).delete_if {|f| f[0, 1] != "_"}
+  return files_in_dir(path).delete_if {|f| File.basename(f)[0, 1] != "_"}
 end
 
 def primary_scss_files()
