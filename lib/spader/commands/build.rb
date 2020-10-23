@@ -47,6 +47,34 @@ module Spader
         end
         
         FileUtils.mkdir_p(dest_dir)
+        
+        # manifest
+        in_manifest = mani_dir + "#{browser}.json"
+        out_manifest = dest_dir + "manifest.json"
+        FileUtils.cp(in_manifest, out_manifest)
+        
+        # messages
+        FileUtils.cp_r(msgs_dir, dest_dir + "_locales")
+        
+        scss_files = primary_files_in_dir(scss_dir)
+        
+        scss_files.each do |scss_file|
+          puts scss_file
+          in_filename = File.basename(scss_file)
+          out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".css", "").gsub(".scss", "")
+          out_file << ".css"
+          puts out_file
+          scss_data = nil
+          
+          if in_filename.include?(".erb")
+            scss_data = render(scss_file)
+          elsif in_filename
+            scss_data = read_file(scss_file) 
+          end
+          
+          scss_data = SassC::Engine.new(scss_data, :style => :expanded).render()
+          write_file(out_file, scss_data)
+        end
       end
     end
   end
