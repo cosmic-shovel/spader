@@ -8,7 +8,7 @@ WebExtension maker's toolkit and framework.
 * Package your extension for distribution.
 
 # Developer Guidance
-Testing the code without building and installing the gem: ruby -Ilib bin/spader
+Testing the code without building and installing the gem: `ruby -Ilib bin/spader`
 
 # Rendering
 Spader provides a Rails-esque views/partials rendering pipeline for HTML, JS, and CSS templates.  All of these filetypes support embedded Ruby via ERB, and CSS files are also run through a SASS parser *after* ERB.
