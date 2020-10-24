@@ -24,8 +24,21 @@ def read_file(filename)
   return nil
 end
 
+# eventually this should use a special Spader binding
+# and allow users to expose their own variables
 def render(template)
-  return ERB.new(read_file(template)).result()
+  browser = $spader_cmd.browser
+  build_info = $spader_cmd.build_info
+  camel_domain = "dissident.be"
+  api_endpoint = "dissident.be"
+  charts_domain = "charts-dev.camelcamelcamel.com"
+  analytics_endpoint = "hello.camelcamelcamel.com/camelizer"
+  browser_requires_polyfill = is_browser_chromal?()
+  zoom_levels = [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0]
+  b = binding
+  template = File.absolute_path(template, $spader_cmd.path)
+  
+  return ERB.new(read_file(template)).result(b)
 end
 
 def pad10(str_num)
@@ -47,12 +60,20 @@ def is_camelizer_three_oh_oh?(ver)
   return Gem::Version.new(ver) == Gem::Version.new("3.0.0")
 end
 
-def is_browser_chromal?(b)
-  return %w[chrome edge opera brave].include?(b.downcase())
+def anchor_target()
+  if !is_browser_chromal?()
+    return ""
+  end
+  
+  return "target=\"_blank\""
+end
+
+def is_browser_chromal?()
+  return %w[chrome edge opera brave].include?($spader_cmd.browser.downcase())
 end
 
 def browsers()
-  return %w[chrome firefox safari opera edge]
+  return Spader::BROWSERS
 end
 
 def entries(path)

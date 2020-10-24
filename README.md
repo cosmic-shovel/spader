@@ -1,5 +1,5 @@
 # spader
- WebExtension maker's toolkit.
+WebExtension maker's toolkit and framework.
  
 # Features
 * Quickly generate skeleton projects.
@@ -8,9 +8,9 @@
 * Package your extension for distribution.
 
 # Developer Guidance
-Testing the code without building: ruby -Ilib bin/spader
+Testing the code without building and installing the gem: ruby -Ilib bin/spader
 
 # Rendering
 Spader provides a Rails-esque views/partials rendering pipeline for HTML, JS, and CSS templates.  All of these filetypes support embedded Ruby via ERB, and CSS files are also run through a SASS parser *after* ERB.
 
-Views are in the respective html/js/scss directories, and do not begin with an underscore.  These are all rendered during the build process.  Partials are in the same directories but begin with underscores, and are not rendered unless included (via SASS "@import" or Ruby "render()").
+Views are in the respective html/js/scss directories, and do not begin with an underscore.  These are all rendered automatically during the build process.  Partials are in the same directories but begin with underscores, and are not rendered unless included (via SASS "@import" or Ruby "render()").

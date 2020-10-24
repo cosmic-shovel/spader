@@ -1,6 +1,6 @@
 module Spader
   class BuildCommand < Command
-    attr_accessor :zip, :path, :browsers, :environment, :version
+    attr_accessor :zip, :path, :browsers, :browser, :environment, :version, :build_info
     
     def initialize()
       @path = nil
@@ -8,6 +8,8 @@ module Spader
       @environment = "development"
       @version = "0.0.0"
       @browsers = BROWSERS
+      @browser = nil
+      @build_info = nil
     end
     
     def execute()
@@ -33,7 +35,10 @@ module Spader
         SassC.load_paths << dir
       end
       
+      @build_info = DateTime.now().strftime("%Y-%m-%d @ %H:%M:%S")
+      
       @browsers.each do |browser|
+        @browser = browser
         dest_dir = @path + "dist/#{@environment}/#{browser}/"
         
         if environment == "production"
@@ -67,12 +72,48 @@ module Spader
           
           if in_filename.include?(".erb")
             scss_data = render(scss_file)
-          elsif in_filename
+          else
             scss_data = read_file(scss_file) 
           end
           
           scss_data = SassC::Engine.new(scss_data, :style => :expanded).render()
           write_file(out_file, scss_data)
+        end
+        
+        js_files = primary_files_in_dir(java_dir)
+        
+        js_files.each do |js_file|
+          puts js_file
+          in_filename = File.basename(js_file)
+          out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".js", "")
+          out_file << ".js"
+          js_data = nil
+          
+          if in_filename.include?(".erb")
+            js_data = render(js_file)
+          else
+            js_data = read_file(js_file)
+          end
+          
+          write_file(out_file, js_data)
+        end
+        
+        html_files = primary_files_in_dir(html_dir)
+        
+        html_files.each do |html_file|
+          puts html_file
+          in_filename = File.basename(html_file)
+          out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".html", "")
+          out_file << ".html"
+          html_data = nil
+          
+          if in_filename.include?(".erb")
+            html_data = render(html_file)
+          else
+            html_data = read_file(html_data)
+          end
+          
+          write_file(out_file, html_data)
         end
       end
     end

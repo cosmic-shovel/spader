@@ -6,7 +6,8 @@
 
 require "spader/command"
 require "spader/document"
-  
+
+$spader_cmd = nil
 
 module Spader
   BROWSERS = %w[chrome edge firefox opera safari].freeze()
@@ -71,6 +72,7 @@ module Spader
         end
       end
       
+      $spader_cmd = cmd
       cmd.execute()
     end
     
@@ -108,6 +110,7 @@ module Spader
         cmd.title = STDIN.gets().chomp()
       end
       
+      $spader_cmd = cmd
       cmd.execute()
     end
 end
