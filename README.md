@@ -17,6 +17,7 @@ Views are in the respective html/js/scss directories, and do not begin with an u
 
 # Commands
 Generate a new project: `spader generate <project_path>`
+
 Build a project: `spader build <project_path> [options]`
   * `-e ENVIRONMENT`, `--environment=ENVIRONMENT`
   * `-b BROWSERS`, `--browsers=BROWSERS`
