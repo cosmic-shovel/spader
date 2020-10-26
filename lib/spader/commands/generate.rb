@@ -26,8 +26,6 @@ module Spader
       
       new_dirs = [
         "_locales/en",
-        "dist/development",
-        "dist/production",
         "font",
         "html",
         "icon",
@@ -37,6 +35,10 @@ module Spader
         "scss",
         "txt",
       ]
+      
+      Spader::ENVIRONMENTS.each do |env|
+        new_dirs << "dist/#{env}"
+      end
       
       new_dirs.each do |new_dir|
         FileUtils.mkdir_p(project.path + new_dir)
