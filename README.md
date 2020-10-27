@@ -17,7 +17,7 @@ Spader provides a Rails-esque views/partials rendering pipeline for HTML, JS, an
 
 Views are in the respective html/js/scss directories, and do not begin with an underscore.  These are all rendered automatically during the build process.  Partials are in the same directories but begin with underscores, and are not rendered unless included (via SASS "@import" or Ruby "render()").
 
-Rendered files are placed in <project dir>/dist/development/<browser>/ or <project dir>/dist/production/<browser>/<version>/.
+Rendered files are placed in `<project dir>/dist/development/<browser>/` or `<project dir>/dist/production/<browser>/<version>/`.
 
 # Commands
 Generate a new project: `spader generate <project_path>`
