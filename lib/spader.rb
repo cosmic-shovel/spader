@@ -58,6 +58,10 @@ module Spader
           cmd.zip = true
         end
         
+        opts.on("-h", "--help", "Show this help message") do
+          opts.show_usage()
+        end
+        
         begin
           opts.order(args) do |path|
             cmd.path = File.absolute_path(path, Dir.pwd)
@@ -85,6 +89,10 @@ module Spader
         def opts.show_usage()
           puts self
           exit(1)
+        end
+        
+        opts.on("-h", "--help", "Show this help message") do
+          opts.show_usage()
         end
         
         if args.empty?()

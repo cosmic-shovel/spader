@@ -11,8 +11,8 @@ require "spader"
 
 ########################################################################################
 
-if ARGV.length() == 0 || ARGV.include?("--help") || ARGV.include?("-h")
-  puts "spader <command> <args>\nvalid commands: generate, download, build, help\nvalid parameters:\n* generate: <project title>\n* download: none\n* build: <extension path> <browser> <environment> <version> [--zip]\n* help: <command>\n"
+if ARGV.length() == 0 || ARGV[0] == "--help" || ARGV[0] == "-h"
+  puts "Usage: spader <command> <args>\nvalid commands: generate, download, build, help\nspader <command> --help"
   exit(0)
 end
 
