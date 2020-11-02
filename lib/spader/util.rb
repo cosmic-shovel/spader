@@ -29,9 +29,9 @@ end
 def render(template)
   browser = $spader_cmd.browser
   build_info = $spader_cmd.build_info
-  camel_domain = "dissident.be"
-  api_endpoint = "dissident.be"
-  charts_domain = "charts-dev.camelcamelcamel.com"
+  camel_domain = "camelcamelcamel.com"
+  api_endpoint = "izer.camelcamelcamel.com"
+  charts_domain = "charts.camelcamelcamel.com"
   analytics_endpoint = "hello.camelcamelcamel.com/camelizer"
   browser_requires_polyfill = is_browser_chromal?()
   zoom_levels = [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0]
@@ -116,11 +116,11 @@ def files_in_dir(path)
 end
 
 def primary_files_in_dir(path)
-  return files_in_dir(path).delete_if {|f| File.basename(f)[0, 1] == "_"}
+  return files_in_dir(path).delete_if {|f| bn = File.basename(f); bn[0, 1] == "_" || bn[0, 1] == "."}
 end
 
 def partial_files_in_dir(path)
-  return files_in_dir(path).delete_if {|f| File.basename(f)[0, 1] != "_"}
+  return files_in_dir(path).delete_if {|f| bn = File.basename(f); bn[0, 1] != "_"}
 end
 
 def primary_scss_files()
@@ -133,4 +133,17 @@ end
 
 def primary_html_files()
   
+end
+
+# path_type = one of [:dir, :file]
+def make_path_absolute(path, base_dir, path_type)
+  tmp = File.absolute_path(path, base_dir)
+  
+  if path_type == :dir
+    if tmp[-1, 1] != File::SEPARATOR
+      tmp << File::SEPARATOR
+    end
+  end
+  
+  return tmp
 end

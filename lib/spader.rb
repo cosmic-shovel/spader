@@ -64,11 +64,7 @@ module Spader
         
         begin
           opts.order(args) do |path|
-            cmd.path = File.absolute_path(path, Dir.pwd)
-            
-            if cmd.path[-1, 1] != File::SEPARATOR
-              cmd.path << File::SEPARATOR
-            end
+            cmd.path = make_path_absolute(path, Dir.pwd, :dir)
           end
         rescue OptionParser::ParseError => e
           opts.warn(e.message)
@@ -101,11 +97,7 @@ module Spader
         
         begin
           opts.order(args) do |path|
-            cmd.path = File.absolute_path(path, Dir.pwd)
-            
-            if cmd.path[-1, 1] != File::SEPARATOR
-              cmd.path << File::SEPARATOR
-            end
+            cmd.path = make_path_absolute(path, Dir.pwd, :dir)
           end
         rescue OptionParser::ParseError => e
           opts.warn(e.message)

@@ -21,6 +21,7 @@ module Spader
         raise InvalidParametersError
       end
       
+      project = Project.new().load_json(@path + "spader.json")
       scss_dir = @path + "scss/"
       font_dir = @path + "font/"
       html_dir = @path + "html/"
@@ -53,18 +54,25 @@ module Spader
         
         FileUtils.mkdir_p(dest_dir)
         
-        # manifest
-        in_manifest = mani_dir + "#{browser}.json"
+        # manifest -- should use our Manifest class
+        in_manifest = mani_dir + "manifest.json.erb"
         out_manifest = dest_dir + "manifest.json"
-        FileUtils.cp(in_manifest, out_manifest)
+        manifest_data = render(in_manifest)
+        manifest_data = JSON.parse(manifest_data)
+        manifest_data["version"] = @version
+        
+        if !project.permissions.empty?()
+          manifest_data["permissions"] += project.permissions
+        end
+        
+        write_file(out_manifest, JSON.pretty_generate(manifest_data))
         
         # messages
         FileUtils.cp_r(msgs_dir, dest_dir + "_locales")
         
-        scss_files = primary_files_in_dir(scss_dir)
+        scss_files = primary_files_in_dir(scss_dir) + project.scss
         
         scss_files.each do |scss_file|
-          puts scss_file
           in_filename = File.basename(scss_file)
           out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".css", "").gsub(".scss", "")
           out_file << ".css"
@@ -80,10 +88,9 @@ module Spader
           write_file(out_file, scss_data)
         end
         
-        js_files = primary_files_in_dir(java_dir)
+        js_files = primary_files_in_dir(java_dir) + project.js
         
         js_files.each do |js_file|
-          puts js_file
           in_filename = File.basename(js_file)
           out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".js", "")
           out_file << ".js"
@@ -98,10 +105,9 @@ module Spader
           write_file(out_file, js_data)
         end
         
-        html_files = primary_files_in_dir(html_dir)
+        html_files = primary_files_in_dir(html_dir) + project.html
         
         html_files.each do |html_file|
-          puts html_file
           in_filename = File.basename(html_file)
           out_file = dest_dir + in_filename.gsub(".erb", "").gsub(".html", "")
           out_file << ".html"
@@ -114,6 +120,14 @@ module Spader
           end
           
           write_file(out_file, html_data)
+        end
+        
+        static_files = project.static
+        
+        static_files.each do |static_file|
+          in_filename = File.basename(static_file)
+          out_file = dest_dir + in_filename
+          FileUtils.cp(static_file, out_file)
         end
       end
     end
