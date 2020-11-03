@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Spader
   class Manifest < Document
     def self.generate()

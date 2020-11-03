@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Spader
   class Messages < Document
     def self.generate(project_title)

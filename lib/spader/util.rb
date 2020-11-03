@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 def write_file(filename, data, append = false)
   if data.is_a?(String)
     data = data.force_encoding(Encoding::UTF_8)

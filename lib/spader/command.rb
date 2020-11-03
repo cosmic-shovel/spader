@@ -1,5 +1,4 @@
-#require "spader/commands/build"
-#require "spader/commands/download"
+# encoding: UTF-8
 
 module Spader
   class Command

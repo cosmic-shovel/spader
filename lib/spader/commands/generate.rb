@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require "spader/command"
 
 module Spader
@@ -51,15 +53,15 @@ module Spader
       
       manifest = Manifest.generate()
       
-      BROWSERS.each do |browser|
-        if browser == "chrome"
-          manifest.document["update_url"] = "http://clients2.google.com/service/update2/crx"
-        else
-          manifest.document.delete("update_url")
-        end
+      #BROWSERS.each do |browser|
+        #if browser == "chrome"
+        #  manifest.document["update_url"] = "http://clients2.google.com/service/update2/crx"
+        #else
+        #  manifest.document.delete("update_url")
+        #end
         
-        manifest.save_json(project.path + "manifest/#{browser}.json")
-      end
+        manifest.save_json(project.path + "manifest/manifest.json.erb")
+     # end
     end
   end
 end

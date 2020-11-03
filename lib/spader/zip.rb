@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'zip'
 require 'zip/zip'
  

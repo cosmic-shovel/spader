@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Spader
   class BuildCommand < Command
     attr_accessor :zip, :path, :browsers, :browser, :environment, :version, :build_info

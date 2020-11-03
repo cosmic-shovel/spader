@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module Spader
   class Project < Document
     attr_accessor :title, :url, :author, :html, :js, :scss, :path, :static, :permissions
