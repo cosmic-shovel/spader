@@ -1,4 +1,4 @@
-**This code is a work-in-progress.  I am extracting the original code from our extension, The Camelizer, and generalizing it for public use.  The idea is currently better than the implementation, but it's slowly getting better.**
+**This code is a work-in-progress.  I am extracting the original code from our extension, The Camelizer, and generalizing it for public use.  The idea is currently better than the implementation, but it's slowly improving.**
 
 # Spader
 WebExtension maker's toolkit and framework.  The concept is simple: all of the main web browsers have standardized on the WebExtension framework, but each browser can have different levels and/or methods of support for the framework.  With Spader, you write an extension once and compile it for each browser.
