@@ -1,5 +1,7 @@
 # encoding: UTF-8
 
+require_relative "zip"
+
 def write_file(filename, data, append = false)
   if data.is_a?(String)
     data = data.force_encoding(Encoding::UTF_8)

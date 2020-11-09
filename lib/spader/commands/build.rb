@@ -24,6 +24,7 @@ module Spader
       end
       
       project = Project.new().load_json(@path + "spader.json")
+      dist_dir = @path + "dist/"
       scss_dir = @path + "scss/"
       font_dir = @path + "font/"
       html_dir = @path + "html/"
@@ -42,7 +43,7 @@ module Spader
       
       @browsers.each do |browser|
         @browser = browser
-        dest_dir = @path + "dist/#{@environment}/#{browser}/"
+        dest_dir = dist_dir + "#{@environment}/#{browser}/"
         
         if environment == "production"
           dest_dir << "#{@version}/"
@@ -130,6 +131,20 @@ module Spader
           in_filename = File.basename(static_file)
           out_file = dest_dir + in_filename
           FileUtils.cp(static_file, out_file)
+        end
+        
+        if @zip
+          zip_file = dist_dir + "3camelizer-#{browser}-#{@environment}-#{@version}.zip"
+          
+          # this should probably prompt the user for confirmation
+          # or do something more helpful
+          if File.exists?(zip_file)
+            puts "Deleting existing: #{zip_file}"
+            FileUtils.remove(zip_file)
+          end
+          
+          puts "Writing: #{zip_file}"
+          ZipFileGenerator.new(dest_dir, zip_file).write()
         end
       end
     end
