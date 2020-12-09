@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.executables << "spader"
   s.add_runtime_dependency "sassc", "~> 2.4"
   s.add_runtime_dependency "zip-zip", "~> 0.3"
+  s.add_runtime_dependency "uglifier", "~> 4.2"
 end
