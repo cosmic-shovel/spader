@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "spader"
-  s.version = "0.0.4-pre"
+  s.version = "0.0.5-pre"
   s.date = "2020-12-08"
   s.summary = "WebExtension maker's toolkit."
   s.description = "Spader provides a framework for building WebExtensions, making it easy to target multiple browsers."
