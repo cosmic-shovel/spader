@@ -66,8 +66,13 @@ module Spader
         
         if !project.permissions.empty?()
           manifest_data["permissions"] += project.permissions
+          
+          if project.permissions.include?("activeTab") && !is_browser_chromal?()
+            manifest_data["permissions"] << "tabs"
+          end
         end
         
+        manifest_data["permissions"].uniq!()
         write_file(out_manifest, JSON.pretty_generate(manifest_data))
         
         # messages
