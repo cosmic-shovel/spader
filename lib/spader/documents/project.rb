@@ -6,7 +6,6 @@ module Spader
     
     def self.generate(base_dir, opts = {})
       project = Project.new()
-      project.path = make_path_absolute(base_dir, Dir.pwd, :dir)
       project.title = opts.delete(:title) || "Example Title"
       project.url = opts.delete(:url) || "https://cosmicshovel.com/"
       project.author = opts.delete(:author) || "Cosmic Shovel, Inc."
@@ -21,7 +20,6 @@ module Spader
     
     def save_json(path)
       @document = {
-        "path" => @path,
         "title" => @title,
         "url" => @url,
         "author" => @author,
@@ -37,15 +35,16 @@ module Spader
     
     def load_json(path)
       super
+
+      base_dir = File.dirname(path)
       
-      @path = @document["path"]
       @title = @document["title"]
       @url = @document["url"]
       @author = @document["author"]
-      @html = absoluteize_paths(@document["html"], "html")
-      @js = absoluteize_paths(@document["js"], "js")
-      @scss = absoluteize_paths(@document["scss"], "scss")
-      @static = absoluteize_paths(@document["static"], "static")
+      @html = absoluteize_paths(base_dir, @document["html"], "html")
+      @js = absoluteize_paths(base_dir, @document["js"], "js")
+      @scss = absoluteize_paths(base_dir, @document["scss"], "scss")
+      @static = absoluteize_paths(base_dir, @document["static"], "static")
       @permissions = @document["permissions"]
       
       return self
@@ -53,17 +52,15 @@ module Spader
     
     private
     
-    def absoluteize_paths(paths, asset_type)
+    def absoluteize_paths(base_dir, paths, asset_type)
       out = []
-      
-      base_dir = @path.dup()
-      
+
       if asset_type != "static"
-        base_dir << asset_type + File::SEPARATOR
+        base_dir = File.join(base_dir, asset_type)
       end
       
       paths.each do |path|
-        out << make_path_absolute(path, base_dir, :file)
+        out << File.absolute_path(File.join(base_dir, path))
       end
       
       return out
