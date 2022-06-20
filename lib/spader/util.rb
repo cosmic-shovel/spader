@@ -32,6 +32,7 @@ end
 # and allow users to expose their own variables
 def render(template)
   browser = $spader_cmd.browser
+  version = @version
   build_info = $spader_cmd.build_info
   camel_domain = "camelcamelcamel.com"
   api_endpoint = "izer.camelcamelcamel.com"
