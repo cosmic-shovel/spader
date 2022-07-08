@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require "ostruct"
 require_relative "zip"
 
 def write_file(filename, data, append = false)
@@ -34,13 +35,7 @@ def render(template)
   browser = $spader_cmd.browser
   version = @version
   build_info = $spader_cmd.build_info
-  camel_domain = "camelcamelcamel.com"
-  api_endpoint = "izer.camelcamelcamel.com"
-  charts_domain = "charts.camelcamelcamel.com"
-  analytics_endpoint = "hello.camelcamelcamel.com/camelizer"
-  browser_requires_polyfill = is_browser_chromal?()
-  zoom_levels = [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1.0, 1.1, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0]
-  b = binding
+  b = OpenStruct.new($spader_cmd.variables).instance_eval { binding }
   template = File.absolute_path(template, $spader_cmd.path)
   
   return ERB.new(read_file(template)).result(b)
@@ -63,14 +58,6 @@ end
 
 def is_camelizer_three_oh_oh?(ver)
   return Gem::Version.new(ver) == Gem::Version.new("3.0.0")
-end
-
-def anchor_target()
-  if !is_browser_chromal?()
-    return ""
-  end
-  
-  return "target=\"_blank\""
 end
 
 def is_browser_chromal?()

@@ -2,7 +2,7 @@
 
 module Spader
   class BuildCommand < Command
-    attr_accessor :zip, :path, :browsers, :browser, :environment, :version, :build_info
+    attr_accessor :zip, :path, :browsers, :browser, :environment, :version, :build_info, :variables
     
     def initialize()
       @path = nil
@@ -12,6 +12,7 @@ module Spader
       @browsers = BROWSERS
       @browser = nil
       @build_info = nil
+      @variables = {}
     end
     
     def execute()
@@ -32,6 +33,7 @@ module Spader
       java_dir = @path + "js/"
       mani_dir = @path + "manifest/"
       msgs_dir = @path + "_locales/"
+      project.initialize_variables(browsers)
       
       SassC.load_paths << scss_dir
         
@@ -43,6 +45,7 @@ module Spader
       
       @browsers.each do |browser|
         @browser = browser
+        @variables = project.variables[browser]
         dest_dir = dist_dir + "#{@environment}/#{browser}/"
         
         if environment == "production"
@@ -89,7 +92,7 @@ module Spader
           if in_filename.include?(".erb")
             scss_data = render(scss_file)
           else
-            scss_data = read_file(scss_file) 
+            scss_data = read_file(scss_file)
           end
           
           scss_data = SassC::Engine.new(scss_data, :style => :expanded).render()

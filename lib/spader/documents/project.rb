@@ -2,7 +2,7 @@
 
 module Spader
   class Project < Document
-    attr_accessor :title, :url, :author, :html, :js, :scss, :path, :static, :permissions
+    attr_accessor :title, :url, :author, :html, :js, :scss, :path, :static, :permissions, :variables
     
     def self.generate(base_dir, opts = {})
       project = Project.new()
@@ -14,6 +14,7 @@ module Spader
       project.scss = []
       project.static = []
       project.permissions = []
+      project.variables = {}
       
       return project
     end
@@ -46,8 +47,27 @@ module Spader
       @scss = absoluteize_paths(base_dir, @document["scss"], "scss")
       @static = absoluteize_paths(base_dir, @document["static"], "static")
       @permissions = @document["permissions"]
+      @variables = {}
       
       return self
+    end
+
+    def initialize_variables(browsers)
+      browsers.each { |browser|
+        @variables[browser] = {}
+      }
+
+      if @document.key?("variables")
+        @document["variables"].each_pair do |key, value|
+          browsers.each { |browser|
+            if value.is_a?(Hash)
+              @variables[browser][key] = value[browser]
+            else
+              @variables[browser][key] = value
+            end
+          }
+        end
+      end
     end
     
     private
