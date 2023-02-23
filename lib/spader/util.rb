@@ -7,7 +7,7 @@ def write_file(filename, data, append = false)
   if data.is_a?(String)
     data = data.force_encoding(Encoding::UTF_8)
   end
-  
+
   begin
     File.open(filename, append ? "a" : "w") { |f|
       f.write(data)
@@ -33,11 +33,13 @@ end
 # and allow users to expose their own variables
 def render(template)
   browser = $spader_cmd.browser
-  version = @version
+  version = $spader_cmd.version
   build_info = $spader_cmd.build_info
-  b = OpenStruct.new($spader_cmd.variables).instance_eval { binding }
+  vars = $spader_cmd.variables
+  vars.merge!({ "browser" => browser, "version" => version, "build_info" => build_info})
+  b = OpenStruct.new(vars).instance_eval { binding }
   template = File.absolute_path(template, $spader_cmd.path)
-  
+
   return ERB.new(read_file(template)).result(b)
 end
 
@@ -48,12 +50,12 @@ end
 def dmsg(msg, cache = false)
   t = DateTime.now()
   msg = msg.is_a?(String) ? msg : msg.inspect()
-  
+
   puts "[#{pad10(t.hour())}:#{pad10(t.min())}:#{pad10(t.sec())}] " + msg
 end
 
 def pretty_float(f)
-  return ("%0.2f" % f) 
+  return ("%0.2f" % f)
 end
 
 def is_camelizer_three_oh_oh?(ver)
@@ -71,39 +73,39 @@ end
 def entries(path)
   list = Dir.entries(path).delete_if {|f| f == "." || f == ".."}
   out = []
-  
+
   list.each do |entry|
     full_path = path.dup()
-    
+
     if path[-1, 1] != "/"
       full_path << "/"
     end
-    
+
     full_path << entry
     out << full_path
   end
-  
+
   return out
 end
 
 def dirs_in_dir(path)
   list = entries(path).delete_if {|f| !File.directory?(f)}
   out = []
-  
+
   list.each do |entry|
     if entry[-1, 1] != "/"
       entry << "/"
     end
-    
+
     out << entry
   end
-  
+
   return out
 end
 
 def files_in_dir(path)
   list = entries(path).delete_if {|f| File.directory?(f)}
-  
+
   return list
 end
 
@@ -116,26 +118,26 @@ def partial_files_in_dir(path)
 end
 
 def primary_scss_files()
-  
+
 end
 
 def primary_js_files()
-  
+
 end
 
 def primary_html_files()
-  
+
 end
 
 # path_type = one of [:dir, :file]
 def make_path_absolute(path, base_dir, path_type)
   tmp = File.absolute_path(path, base_dir)
-  
+
   if path_type == :dir
     if tmp[-1, 1] != File::SEPARATOR
       tmp << File::SEPARATOR
     end
   end
-  
+
   return tmp
 end
