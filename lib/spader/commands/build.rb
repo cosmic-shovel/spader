@@ -76,6 +76,13 @@ module Spader
         end
         
         manifest_data["permissions"].uniq!()
+
+        if File.exists?(mani_dir + "#{browser}.json")
+          manifest_data.merge!(JSON.parse(File.read(mani_dir + "#{browser}.json")))
+        elsif File.exists?(mani_dir + "#{browser}.json.erb")
+          manifest_data.merge!(JSON.parse(render(mani_dir + "#{browser}.json.erb")))
+        end
+
         write_file(out_manifest, JSON.pretty_generate(manifest_data))
         
         # messages
